@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -8,10 +9,9 @@
         body {
             position: relative;
             margin: 0;
-            height: auto; /* Убираем фиксированную высоту */
             color: white;
             text-align: center;
-            overflow-x: hidden;
+            overflow-x: hidden; /* Убираем горизонтальную прокрутку */
         }
         body::before {
             content: '';
@@ -34,8 +34,9 @@
         }
         img {
             width: 80%; /* Увеличиваем ширину изображения */
-            max-width: 1000px; /* Максимальная ширина изображения */
+            max-width: 975px; /* Максимальная ширина изображения */
             height: auto; /* Автоматическая высота для сохранения пропорций */
+            cursor: pointer; /* Указатель при наведении */
         }
         .text-container {
             border: 2px solid lightgray; /* Рамка бледно-серого цвета под текстом */
@@ -47,6 +48,7 @@
             margin-top: 20px; /* Отступ сверху */
             max-height: 80vh; /* Максимальная высота для контейнера */
             overflow-y: auto; /* Прокрутка по вертикали */
+            -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
         }
         p {
             margin: 20px 0;
@@ -72,10 +74,22 @@
             z-index: 3; /* Поверх всего */
             justify-content: center;
             align-items: center;
+            overflow: hidden; /* Убираем прокрутку */
         }
         #fullscreen-image img {
             max-width: 90%;
             max-height: 90%;
+        }
+        .close-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 4; /* Поверх полноэкранного изображения */
         }
     </style>
 </head>
@@ -85,24 +99,27 @@
     </div>
     <div class="text-container"> <!-- Контейнер для текста с рамкой -->
         <p>В братской могиле похоронены 375 мирных жителей еврейской национальности, расстрелянных немецко-фашистскими захватчиками 8 октября 1941 г. В 1953 г. родные погибших поставили в д.Узляны на братской могиле памятник с надписью на идише и русском языке: «Светлая память на вечные времена 375 евреям из деревни Узляны, погибшим от рук лютых врагов человечества, фашистско-немецких злодеев 8 октября 1941 г.». Находится в д. Узляны.</p>
-        <hr> <!-- Красная линия -->
+
+<hr> <!-- Красная линия -->
         <p>Потапенко Антон, 11 класс</p> <!-- Новый текст под красной линией -->
     </div>
 
     <!-- Полноэкранное изображение -->
-    <div id="fullscreen-image" onclick="closeFullscreen()">
-        <img src="ИМЕНА.jpg" alt="Полноэкранное изображение">
+    <div id="fullscreen-image">
+        <button class="close-button" onclick="closeFullscreen(event)">✖</button> <!-- Кнопка закрытия -->
+        <img id="fullscreen-img" src="ИМЕНА.jpg" alt="Полноэкранное изображение">
     </div>
 
     <script>
         const centralImage = document.getElementById('central-image');
         const fullscreenImage = document.getElementById('fullscreen-image');
 
-centralImage.onclick = function() {
+        centralImage.onclick = function() {
             fullscreenImage.style.display = 'flex'; // Показать полноэкранное изображение
         }
 
-        function closeFullscreen() {
+        function closeFullscreen(event) {
+            event.stopPropagation(); // Остановить всплытие события клика
             fullscreenImage.style.display = 'none'; // Скрыть полноэкранное изображение
         }
     </script>
